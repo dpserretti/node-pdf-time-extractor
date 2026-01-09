@@ -1,0 +1,4 @@
+node_modules/
+documents/*
+!documents/example_report.pdf
+.env
