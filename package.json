@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node src/index.js",
     "seed": "node scripts/generate_pdf.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:coverage": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -33,5 +34,8 @@
   "dependencies": {
     "pdf-parse": "^2.2.0",
     "pdfkit": "^0.17.2"
+  },
+  "devDependencies": {
+    "jest": "^30.2.0"
   }
 }
