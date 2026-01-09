@@ -35,7 +35,7 @@ Please respect the existing project layout:
       ├── services/   # I/O and external integrations
       ├── utils/      # Pure utility / business logic
       ├── config.js   # Centralized configuration
-      └── index.js    # Application entry point
+      └── index.js
 
 - Do not place generated files inside `src/`
 - Avoid committing large or unnecessary binaries
@@ -52,15 +52,18 @@ Please respect the existing project layout:
 
 ---
 
-## 🧪 Testing
+## 🧪 Testing & CI
 
-Tests are not mandatory yet, but new features should be written in a **test-friendly way**.
+This project uses **Jest** for unit testing and **GitHub Actions** for CI.
 
-Future test setup may include:
+- All Pull Requests run the test suite automatically
+- PRs with failing tests or broken builds will not be accepted
+- New features should include appropriate tests when applicable
 
-- Jest
-- Unit tests for utilities
-- Mocks for filesystem and PDF parsing
+To run tests locally:
+
+    npm test
+    npm run test:coverage
 
 ---
 
@@ -84,9 +87,9 @@ When opening a Pull Request:
 - Keep PRs **small and focused**
 - Clearly describe **what problem is being solved**
 - Reference related issues when applicable
-- Ensure the project runs locally without errors
+- Ensure all tests pass locally and in CI
 
-Pull Requests that introduce breaking changes should be discussed first.
+Breaking changes should be discussed before submitting a PR.
 
 ---
 

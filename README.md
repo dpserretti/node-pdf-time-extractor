@@ -43,6 +43,8 @@ The script automates the entire workflow:
     │   │   └── timeExtractor.js
     │   ├── config.js
     │   └── index.js
+    ├── tests/                  # Unit tests
+    ├── .github/workflows/ci.yml
     ├── .gitignore
     ├── package.json
     ├── package-lock.json
@@ -81,12 +83,27 @@ This will create a valid PDF inside the `documents/` directory containing sample
 
 ---
 
+## 🧪 Testing & CI
+
+This project includes **automated tests** and a **GitHub Actions CI pipeline**.
+
+- Unit tests are written using **Jest**
+- Tests and coverage run automatically on every push and pull request
+- Pull Requests with failing tests will not pass CI
+
+To run tests locally:
+
+    npm test
+    npm run test:coverage
+
+---
+
 ## 🔍 Technical Notes
 
 - PDF generation uses **pdfkit** to ensure a valid and parseable PDF structure
-- PDF parsing is handled by **pdf-parse (v2+)**, which supports modern XRef streams
+- PDF parsing is handled by **pdf-parse (v2+)**
 - Time extraction uses a strict Regular Expression to avoid invalid timestamps
-- All file paths are resolved explicitly to ensure cross-platform compatibility
+- All file paths are resolved explicitly for cross-platform compatibility
 
 ---
 
@@ -97,8 +114,8 @@ This project is intentionally minimal, but it can be extended easily:
 - CLI support (`npx pdf-time-extractor`)
 - JSON or CSV output formats
 - Grouping totals by category (e.g. Backend, Frontend)
-- Automated tests (Jest)
-- GitHub Actions (CI)
+- Integration tests with real PDFs
+- Release automation
 
 ---
 
