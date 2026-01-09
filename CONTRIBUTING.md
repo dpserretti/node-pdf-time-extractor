@@ -3,7 +3,7 @@
 Thank you for your interest in contributing to **node-pdf-time-extractor**!
 Contributions are welcome and appreciated.
 
-This document defines **how to contribute**, **project conventions**, and **expected standards** to keep the codebase clean, maintainable, and consistent.
+This document outlines how to contribute, project conventions, and expected standards to keep the codebase clean, maintainable, and consistent.
 
 ---
 
@@ -11,42 +11,47 @@ This document defines **how to contribute**, **project conventions**, and **expe
 
 ### Prerequisites
 
-- Node.js **v14+**
+- Node.js v18+
 - npm
 
 ### Local setup
 
-    npm install
-    npm run seed
-    npm start
+```bash
+npm install
+npm run seed
+npm test
+```
 
-- `npm run seed` generates a sample PDF inside `documents/`
-- `npm start` runs the extractor against all PDFs in that directory
+- `npm run seed` generates a sample PDF inside the `documents/` directory
+- `npm test` runs unit tests and CLI tests
 
 ---
 
 ## 📂 Project Structure
 
-Please respect the existing project layout:
+```txt
+src/
+├── cli/          # CLI interface and argument parsing
+├── core/         # Core business logic
+├── services/     # I/O and external integrations
+├── utils/        # Pure utility functions
+tests/            # Unit and CLI tests
+.github/workflows/ # CI configuration
+documents/        # Sample / input PDFs
+```
 
-    documents/        # Input / generated PDFs
-    scripts/          # Utility scripts (seed, mocks, helpers)
-    src/              # Application source code
-      ├── services/   # I/O and external integrations
-      ├── utils/      # Pure utility / business logic
-      ├── config.js   # Centralized configuration
-      └── index.js
-
-- Do not place generated files inside `src/`
-- Avoid committing large or unnecessary binaries
+Guidelines:
+- Keep business logic out of the CLI layer
+- Prefer pure functions in `utils/`
+- Avoid committing generated or large binary files
 
 ---
 
 ## 🧠 Coding Guidelines
 
-- Follow the **Single Responsibility Principle**
+- Follow the Single Responsibility Principle
 - Keep functions small and readable
-- Prefer **explicit code over clever code**
+- Prefer explicit code over clever code
 - Avoid side effects in utility modules
 - Use clear and descriptive variable names
 
@@ -54,16 +59,15 @@ Please respect the existing project layout:
 
 ## 🧪 Testing & CI
 
-This project uses **Jest** for unit testing and **GitHub Actions** for CI.
+- All Pull Requests run tests automatically via GitHub Actions
+- PRs with failing tests will not be accepted
+- New features should include tests when applicable
 
-- All Pull Requests run the test suite automatically
-- PRs with failing tests or broken builds will not be accepted
-- New features should include appropriate tests when applicable
+Run locally:
 
-To run tests locally:
-
-    npm test
-    npm run test:coverage
+```bash
+npm test
+```
 
 ---
 
@@ -73,10 +77,13 @@ This project follows **Conventional Commits**.
 
 Examples:
 
-    feat: add PDF parsing and time extraction pipeline
-    fix: handle invalid timestamps gracefully
-    chore: update dependencies
-    refactor: split index logic into services
+```txt
+feat: add CLI interface
+feat: add controlled parallel PDF processing
+test: add CLI integration tests
+ci: add GitHub Actions workflow
+docs: update README
+```
 
 ---
 
@@ -84,12 +91,12 @@ Examples:
 
 When opening a Pull Request:
 
-- Keep PRs **small and focused**
-- Clearly describe **what problem is being solved**
+- Keep PRs small and focused
+- Clearly describe what problem is being solved
 - Reference related issues when applicable
-- Ensure all tests pass locally and in CI
+- Ensure the project runs locally without errors
 
-Breaking changes should be discussed before submitting a PR.
+Pull Requests that introduce breaking changes should be discussed first.
 
 ---
 
@@ -103,9 +110,4 @@ Breaking changes should be discussed before submitting a PR.
 
 ## 📄 License
 
-By contributing to this project, you agree that your contributions will be licensed under the **MIT License**.
-
----
-
-Thanks for contributing 🚀
-Well-structured contributions make this project better for everyone.
+By contributing to this project, you agree that your contributions will be licensed under the MIT License.
