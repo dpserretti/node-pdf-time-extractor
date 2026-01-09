@@ -18,6 +18,6 @@ describe('extractMinutes', () => {
 
     test('ignores invalid time patterns', () => {
         const text = 'Invalid: 99:99 Valid: 03:00';
-        expect(extractMinutes(text)).toBe(999);
+        expect(extractMinutes(text)).toBe(180);
     });
 });
