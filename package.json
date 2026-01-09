@@ -32,11 +32,15 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
+    "commander": "^14.0.2",
     "p-limit": "^7.2.0",
     "pdf-parse": "^2.2.0",
     "pdfkit": "^0.17.2"
   },
   "devDependencies": {
     "jest": "^30.2.0"
+  },
+  "bin": {
+    "pdf-time-extractor": "src/cli/index.js"
   }
 }
