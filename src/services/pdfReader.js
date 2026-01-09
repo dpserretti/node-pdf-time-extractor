@@ -10,7 +10,7 @@ async function readPDF(filePath, pdfParser = null) {
 
         return data.text;
     } catch (error) {
-        console.error(`❌ Erro no arquivo ${path.basename(filePath)}:`, error.message);
+        console.error(`❌ Error in file ${path.basename(filePath)}:`, error.message);
         return '';
     }
 }

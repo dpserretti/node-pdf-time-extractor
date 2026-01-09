@@ -1,58 +1,72 @@
 const fs = require('fs');
 const path = require('path');
-const pdf = require('pdf-parse');
+const pLimit = require('p-limit').default;
 
-const PDF_DIR = './documents';
-const TIME_PATTERN = /(\d{2}:\d{2})/g;
+const { PDF_DIR } = require('./config');
+const { readPDF } = require('./services/pdfReader');
+const { extractMinutes } = require('./utils/timeExtractor');
 
-async function readPDF(filePath) {
-    try {
-        const dataBuffer = fs.readFileSync(filePath);
-        const data = await pdf(dataBuffer);
-        return data.text;
-    } catch (error) {
-        console.error(`❌ Error in file ${path.basename(filePath)}:`, error.message);
-        return '';
+const CONCURRENCY_LIMIT = 4; // safe and reasonable number
+
+const DEBUG = process.env.DEBUG === 'true';
+
+function logDebug(message) {
+    if (DEBUG) {
+        console.log(message);
     }
 }
 
-function extractMinutes(text) {
-    const matches = text.match(TIME_PATTERN);
-    if (!matches) return 0;
+async function processFile(file) {
+    logDebug(`▶️ Start: ${file}`);
 
-    return matches.reduce((total, timeStr) => {
-        const [hours, minutes] = timeStr.split(':').map(Number);
-        return total + (hours * 60) + minutes;
-    }, 0);
+    const filePath = path.join(PDF_DIR, file);
+    const text = await readPDF(filePath);
+    const minutes = extractMinutes(text);
+
+    logDebug(`⏹️ End: ${file}`);
+
+    return {
+        file,
+        minutes
+    };
 }
 
 async function main() {
     console.log(`🚀 Processing: ${PDF_DIR}`);
 
     if (!fs.existsSync(PDF_DIR)) {
-        console.log("Folder not found.");
+        console.log('Folder not found.');
         return;
     }
 
     const files = fs.readdirSync(PDF_DIR).filter(file => file.endsWith('.pdf'));
+
+    const limit = pLimit(CONCURRENCY_LIMIT);
+
+    const tasks = files.map(file =>
+        limit(() => processFile(file))
+    );
+
+    const results = await Promise.all(tasks);
+
     let grandTotalMinutes = 0;
 
-    for (const file of files) {
-        const filePath = path.join(PDF_DIR, file);
-        const text = await readPDF(filePath);
-        const fileMinutes = extractMinutes(text);
+    for (const { file, minutes } of results) {
+        grandTotalMinutes += minutes;
 
-        grandTotalMinutes += fileMinutes;
+        const h = Math.floor(minutes / 60);
+        const m = minutes % 60;
 
-        const h = Math.floor(fileMinutes / 60);
-        const m = fileMinutes % 60;
-        console.log(`📄 ${file}: \t ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m`);
+        console.log(
+            `📄 ${file}: \t ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m`
+        );
     }
+
+    console.log('------------------------');
 
     const totalHours = Math.floor(grandTotalMinutes / 60);
     const remainingMinutes = grandTotalMinutes % 60;
 
-    console.log('------------------------');
     console.log(`✅ TOTAL: ${totalHours}h ${remainingMinutes}m`);
 }
 
