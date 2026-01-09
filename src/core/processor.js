@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const pLimit = require('p-limit').default;
+const pLimit = require('p-limit');
 
 const { readPDF } = require('../services/pdfReader');
 const { extractMinutes } = require('../utils/timeExtractor');
