@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const pLimit = require('p-limit').default;
+const pLimit = require('p-limit');
 
 const { PDF_DIR } = require('./config');
 const { readPDF } = require('./services/pdfReader');
